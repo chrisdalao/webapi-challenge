@@ -31,4 +31,25 @@ router.get('/:id/actions', (req, res) => {
         })
 });
 
+
+router.post('/', (req, res) => {
+    const projectData = req.body;
+    if (!projectData) {
+        res.status(400).json({ message: "missing project data" });
+    } else if (!projectData.name || !projectData.description) {
+        res.status(400).json({ message: "please provide the required fields for name and description" });
+    } else {
+        Project.insert(projectData)
+            .then(project => {
+                if (project) {
+                    res.status(201).json(projectData)
+                }
+            })
+            .catch(err => {
+                err = { error: "There was an error while saving the project to the database" };
+                res.status(500).json(err);
+            })
+    }
+});
+
 module.exports = router;
