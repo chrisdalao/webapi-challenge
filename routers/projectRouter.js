@@ -14,4 +14,21 @@ router.get('/', (req, res) => {
         })
 });
 
+router.get('/:id/actions', (req, res) => {
+    const { id } = req.params;
+
+    Project.getProjectActions(id)
+        .then(actions => {
+            if (actions && actions.length) {
+                res.status(200).json(actions);
+            } else {
+                res.status(400).json({ message: 'That project does not exist' });
+            }
+        })
+        .catch(err => {
+            err = { error: "The actions for the that project could not be retrieved" };
+            res.status(500).json(err);
+        })
+});
+
 module.exports = router;
