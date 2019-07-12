@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
                 }
             })
             .catch(err => {
-                err = { error: "There was an error while saving the action to the database" };
+                err = { error: "The specified project_id does not exist" };
                 res.status(500).json(err);
             })
     }
