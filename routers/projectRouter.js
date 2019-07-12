@@ -80,7 +80,6 @@ router.delete('/:id', (req, res) => {
     const { id } = req.params;
     Project.remove(id)
         .then(deleted => {
-            console.log(deleted)
             if (deleted) {
                 res.status(201).json(deleted);
             }

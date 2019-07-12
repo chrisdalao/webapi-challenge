@@ -49,6 +49,8 @@ router.put('/:id', (req, res) => {
             .then(updated => {
                 if (updated) {
                     res.status(200).json(changes);
+                } else {
+                    res.status(404).json({ message: "The action with the specified ID does not exist" });
                 }
             })
 
@@ -59,5 +61,23 @@ router.put('/:id', (req, res) => {
     }
 });
 
+
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+
+    Action.remove(id)
+        .then(deleted => {
+            if (deleted) {
+                res.status(204).json(deleted);
+            } else {
+                res.status(404).json({ message: "The action with the specified ID does not exist" });
+            }
+        })
+        .catch(err => {
+            err = { error: "The action could not be removed" };
+            res.status(500).json(err);
+        })
+
+});
 
 module.exports = router;
