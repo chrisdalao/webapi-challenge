@@ -52,4 +52,29 @@ router.post('/', (req, res) => {
     }
 });
 
+
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+
+    if (!id) {
+        res.status(404).json({ message: "The project with the specified ID does not exist" });
+    } else if (!changes.name || !changes.description) {
+        res.status(400).json({ errorMessage: "Please provide a name and description for the project" });
+    } else {
+        Project.update(id, changes)
+            .then(updated => {
+                if (updated) {
+                    res.status(200).json(changes);
+                }
+            })
+
+            .catch(err => {
+                err = { error: "The project information could not be modified" };
+                res.status(500).json(err);
+            })
+    }
+});
+
+
 module.exports = router;
